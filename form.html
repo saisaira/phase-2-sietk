@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>form for resume</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Form for Resume</h1>
+   <div class="mainDiv">
+     <!-- carrer objective div -->
+       <div class="subDiv">
+         <h1>Carrer Objective</h1>
+         <select id="carrer" name="carrer">
+           <option>select your carrer objective</option>
+           <option>To utilize my knowledge for growth of organisation</option>
+           <option>To secure a challenging position in a reputable organisation to  expand my learnings,knowledge and skills.</option>
+         </select>
+       </div>
+       <!-- personal information -->
+       <div class="subDiv1">
+         <h1>Personal Information</h1>
+         <input type="text" name="name" id="name" placeholder="Enter your name">
+         <input type="number" name="phone" id="phone" placeholder="Enter your phone number">
+         <input type="text" name="email" id="email" placeholder="Enter your email">
+       </div>
+        <!-- educational details -->
+        <div class="subDiv1">
+          <h1>Graduation details</h1>
+          <label for="gbranch">
+            <select id="gbranch" name="gbranch">
+              <option>Select your branch</option>
+              <option>B.Tech(Cse)</option>
+              <option>B.Tech(Csse)</option>
+              <option>B.Tech(It)</option>
+              <option>B.Tech(Ece)</option>
+              <option>B.Tech(EEE)</option>
+            </select>
+          </label>
+          <label for="ginst">
+            <input type="text" name="ginst" id="ginst" placeholder="enter your college name">
+          </label>
+          <label for="gper">
+             <input type="number" name="gper" id="gper" placeholder="Enter your percentage">
+          </label>
+          <label for="gyop">
+             <input type="number" name="gyop" id="gyop" placeholder="Enter your year of passing">
+          </label>
+        </div>
+        <!-- intermediate details -->
+        <div class="subDiv1">
+          <h1>intermediate details</h1>
+          <label for="ibranch">
+            <select id="ibranch" name="ibranch">
+              <option>Select your branch</option>
+              <option>Intermediate(M.P.C)</option>
+              <option>Intermediate(BI.P.C)</option>
+              <option>Intermediate(H.E.C)</option>
+            </select>
+          </label>
+          <label for="iinst">
+            <input type="text" name="iinst" id="iinst" placeholder="enter your college name">
+          </label>
+          <label for="iper">
+             <input type="number" name="iper" id="iper" placeholder="Enter your percentage">
+          </label>
+          <label for="iyop">
+             <input type="number" name="iyop" id="iyop" placeholder="Enter your year of passing">
+          </label>
+        </div>
+        <!-- ssc details -->
+        <div class="subDiv1">
+          <h1>SSC Details</h1>
+          <label for="sbranch">
+            <select id="sbranch" name="sbranch">
+              <option>Select your course</option>
+              <option>SSC</option>
+              <option>CBSE</option>
+            </select>
+          </label>
+          <label for="sinst">
+            <input type="text" name="sinst" id="sinst" placeholder="enter your college name">
+          </label>
+          <label for="sper">
+             <input type="number" name="sper" id="sper" placeholder="Enter your percentage">
+          </label>
+          <label for="syop">
+             <input type="number" name="syop" id="syop" placeholder="Enter your year of passing">
+          </label>
+        </div>
+        <!-- achievements -->
+        <div class="subDiv1">
+          <h1>achievements</h1>
+          <label for="ache">
+            <input type="text" name="ache" id="ache" placeholder="enter your first achievement">
+          </label>
+          <label for="ache1">
+             <input type="text" name="ache1" id="ache1" placeholder="Enter your second achievement">
+          </label>
+          <label for="ache2">
+             <input type="text" name="ache2" id="ache2" placeholder="Enter your third achievement">
+          </label>
+        </div>
+   </div>
+   <button type="button" name="button" onclick="submitData()">Submit</button>
+  </body>
+</html>
+
+<!-- java script -->
+<script type="text/javascript">
+  function submitData(){
+    var carrer = document.getElementById('carrer').value;
+
+    var name = document.getElementById("name").value;
+    var phone = document.getElementById('phone').value;
+    var email = document.getElementById('email').value;
+
+    var gbranch = document.getElementById('gbranch').value;
+    var ginst = document.getElementById('ginst').value;
+    var gper = document.getElementById('gper').value;
+    var gyop = document.getElementById('gyop').value;
+
+    var ibranch = document.getElementById('ibranch').value;
+    var iinst = document.getElementById('iinst').value;
+    var iper = document.getElementById('iper').value;
+    var iyop = document.getElementById('iyop').value;
+
+    var sbranch = document.getElementById('sbranch').value;
+    var sinst = document.getElementById('sinst').value;
+    var sper = document.getElementById('sper').value;
+    var syop = document.getElementById('syop').value;
+
+    var ache = document.getElementById('ache').value;
+    var ache1 = document.getElementById('ache1').value;
+    var ache2= document.getElementById('ache2').value;
+
+
+
+    var sietk;
+    var result;
+    var store;
+    var tx;
+    var indexedDB = window.indexedDB || window.mozIndexedDB ||
+                    window.webkitIndexedDB || window.msIndexedDB ;
+    // db creation
+    sietk = indexedDB.open("mydb",1);
+
+    sietk.onerror = function(e){
+      console.log("error"+e);
+    }
+
+    sietk.onupgradeneeded = function(e) {
+      result = e.target.result;
+      store = result.createObjectStore("resume", {keyPath:"name"});
+    }
+
+    sietk.onsuccess = function(e) {
+        result = e.target.result;
+        tx = result.transaction("resume",'readwrite');
+        store = tx.objectStore("resume");
+        store.put({
+          carrer:carrer,
+          name : name,
+          phone : phone,
+          email : email,
+          education:[
+            {
+              course : gbranch,
+              institute : ginst,
+              percentage : gper,
+              yearofpassing : gyop
+            },
+            {
+              course : ibranch,
+              institute : iinst,
+              percentage : iper,
+              yearofpassing : iyop
+            },
+            {
+              course : sbranch,
+              institute : sinst,
+              percentage : sper,
+              yearofpassing : syop
+            }
+          ],
+          achievements:[
+            {
+              achieve : ache
+            },
+            {
+              achieve : ache1
+            },
+            {
+              achieve : ache2
+            }
+          ]
+        });
+        window.alert("data submitted");
+        window.open("index.html");
+    }
+  }
+</script>
